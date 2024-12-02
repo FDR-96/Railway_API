@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     # DB Settings
     POSTGRES_DATABASE_URL: str = os.environ.get("POSTGRES_DATABASE_URL")
 
+    # MQTT Settings
+
+    MQTT_BROKER: str = os.environ.get("MQTT_BROKER")
+    MQTT_PORT: str = os.environ.get("MQTT_PORT")
+
     class Config:
         """The configuration for the settings."""
 
