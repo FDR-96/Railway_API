@@ -29,7 +29,17 @@ services:
       - POSTGRES_DB=heavyweight_db
     networks:
       - heavyweight_network
- 
+
+  mosquitto:
+      image: eclipse-mosquitto
+      hostname: mosquitto
+      container_name: mosquitto
+      restart: unless-stopped
+      ports:
+        - "1883:1883"
+        - "9001:9001"
+      networks:
+      - heavyweight_network
 
 volumes:
   heavyweight_volume:
