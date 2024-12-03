@@ -5,6 +5,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.config.database import SessionLocal
 from app.mqtt.models.telemetry import Telemetry
 from app.config.settings import get_settings
+from datetime import datetime
+
 
 settings = get_settings()
 MQTT_TOPIC = 'telemetry/#'
@@ -17,37 +19,46 @@ def get_db_session():
     finally:
         db.close()
 
-def save_telemetry(payload, db_session):
+def save_telemetry(telemetry, db_session):
 #    """Guarda la telemetría en la base de datos"""
-#    try:
-        # Asegúrate de que esta línea esté alineada correctamente (sin indentación extra)
-        telemetry = Telemetry(
-            device_id=payload.get("device_id"),
-            temperature=payload.get("temperature"),
-            humidity=payload.get("humidity"),
-            timestamp=payload.get("timestamp"),
-        )
+    try:
         db_session.add(telemetry)
         db_session.commit()
-#    except SQLAlchemyError as e:
-#        db_session.rollback()
-#        print(f"Error al guardar en la base de datos: {e}")
-#    except Exception as e:
-#        print(f"Error desconocido: {e}")
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        print(f"Error al guardar en la base de datos: {e}")
+    except Exception as e:
+        print(f"Error desconocido: {e}")
 
 def on_message(client, userdata, message):
 #    """Callback ejecutado al recibir un mensaje MQTT"""
-#    try:
+    try:
         payload = json.loads(message.payload.decode())
-        if payload.get("device_id") and payload.get("temperature") and payload.get("humidity") and payload.get("timestamp"):
+        print(f"Received message on {message.topic}: {message.payload.decode()}")
+        #print(f"Received message: {message}")
+        device_id = payload.get("device_id")
+        temperature = payload.get("temperature")
+        humidity = payload.get("humidity")
+        timestamp_str = payload.get("timestamp")
+         
+        if device_id and temperature and humidity and timestamp_str:
+             # Asegúrate de que esta línea esté alineada correctamente (sin indentación extra)
+            timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+            
+            telemetry = Telemetry(
+                device_id=device_id,
+                temperature=temperature,
+                humidity=humidity,
+                timestamp=timestamp,
+            )
             db_session = next(get_db_session())
-            save_telemetry(payload, db_session)
+            save_telemetry(telemetry, db_session)
         else:
             print("Payload incompleto o inválido:", payload)
-#    except json.JSONDecodeError as e:
-#        print(f"Error al decodificar JSON: {e}")
-#    except Exception as e:
-#        print(f"Error procesando el mensaje: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Error al decodificar JSON: {e}")
+    except Exception as e:
+        print(f"Error procesando el mensaje: {e}")
 
 client = mqtt.Client()
 
