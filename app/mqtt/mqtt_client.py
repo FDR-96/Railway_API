@@ -18,8 +18,9 @@ def get_db_session():
         db.close()
 
 def save_telemetry(payload, db_session):
-    """Guarda la telemetría en la base de datos"""
-    try:
+#    """Guarda la telemetría en la base de datos"""
+#    try:
+        # Asegúrate de que esta línea esté alineada correctamente (sin indentación extra)
         telemetry = Telemetry(
             device_id=payload.get("device_id"),
             temperature=payload.get("temperature"),
@@ -28,25 +29,25 @@ def save_telemetry(payload, db_session):
         )
         db_session.add(telemetry)
         db_session.commit()
-    except SQLAlchemyError as e:
-        db_session.rollback()
-        print(f"Error al guardar en la base de datos: {e}")
-    except Exception as e:
-        print(f"Error desconocido: {e}")
+#    except SQLAlchemyError as e:
+#        db_session.rollback()
+#        print(f"Error al guardar en la base de datos: {e}")
+#    except Exception as e:
+#        print(f"Error desconocido: {e}")
 
 def on_message(client, userdata, message):
-    """Callback ejecutado al recibir un mensaje MQTT"""
-    try:
+#    """Callback ejecutado al recibir un mensaje MQTT"""
+#    try:
         payload = json.loads(message.payload.decode())
         if payload.get("device_id") and payload.get("temperature") and payload.get("humidity") and payload.get("timestamp"):
             db_session = next(get_db_session())
             save_telemetry(payload, db_session)
         else:
             print("Payload incompleto o inválido:", payload)
-    except json.JSONDecodeError as e:
-        print(f"Error al decodificar JSON: {e}")
-    except Exception as e:
-        print(f"Error procesando el mensaje: {e}")
+#    except json.JSONDecodeError as e:
+#        print(f"Error al decodificar JSON: {e}")
+#    except Exception as e:
+#        print(f"Error procesando el mensaje: {e}")
 
 client = mqtt.Client()
 
