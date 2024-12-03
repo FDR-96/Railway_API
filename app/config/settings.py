@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # MQTT Settings
 
     MQTT_BROKER: str = os.environ.get("MQTT_BROKER")
-    MQTT_PORT: str = os.environ.get("MQTT_PORT")
+    MQTT_PORT: int = os.environ.get("MQTT_PORT")
 
     class Config:
         """The configuration for the settings."""

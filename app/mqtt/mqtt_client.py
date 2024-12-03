@@ -53,12 +53,19 @@ client = mqtt.Client()
 
 def connect_mqtt():
     """Configura la conexión al broker MQTT"""
+    print(settings.MQTT_BROKER)
+    print(settings.MQTT_PORT)
     client.connect(settings.MQTT_BROKER, settings.MQTT_PORT, 60)
 
 def on_connect(client, userdata, flags, rc):
     """Función que se ejecuta cuando el cliente se conecta al broker"""
     print(f"Conectado al broker MQTT con el código {rc}")
     client.subscribe(MQTT_TOPIC)
+
+def startup_mqtt():
+    """Conectar al MQTT cuando arranque la aplicación"""
+    connect_mqtt()
+    client.loop_start()
 
 client.on_connect = on_connect
 client.on_message = on_message
