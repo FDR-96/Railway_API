@@ -6,6 +6,10 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.config.settings import get_settings
+from app.example_module.models import Base  # Importa el Base del modelo
+
+# Asegúrate de usar el metadata de tu modelo
+target_metadata = Base.metadata
 
 settings = get_settings()
 

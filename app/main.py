@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from app.mqtt.mqtt_routes import router as mqtt_router
 from app.mqtt.mqtt_client import startup_mqtt
+from app.auth.endpoints import router as auth_router
 
 from app.common.dependencies import get_db
 from app.example_module.apis import router as example_router
@@ -19,6 +20,7 @@ async def lifespan(_: FastAPI):
     """This is the startup and shutdown code for the FastAPI application."""
     # Startup code
     print("System Call: Enhance Armament x_x")  # SAO Reference
+    
     startup_mqtt()
     # Bigger Threadpool i.e you send a bunch of requests it will handle a max of 1000 at a time, the default is 40
     limiter = to_thread.current_default_thread_limiter()
@@ -65,5 +67,7 @@ async def health_check(_=Depends(get_db)):
 
 # Routers
 app.include_router(example_router, prefix="/example", tags=["Example Docs"])
+# Registrar rutas
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 # Incluir las rutas MQTT
 app.include_router(mqtt_router)

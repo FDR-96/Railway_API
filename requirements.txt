@@ -47,3 +47,6 @@ uvicorn==0.29.0
 watchfiles==0.21.0
 websockets==12.0
 paho-mqtt==2.1.0
+psycopg2-binary==2.9.7  # Cliente de PostgreSQL
+sqlalchemy-utils==0.41.1
+ 

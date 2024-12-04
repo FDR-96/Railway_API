@@ -15,6 +15,7 @@ class Settings(BaseSettings):
 
     # DB Settings
     POSTGRES_DATABASE_URL: str = os.environ.get("POSTGRES_DATABASE_URL")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30  # Opcional: tiempo de expiración del token
 
     # MQTT Settings
 
