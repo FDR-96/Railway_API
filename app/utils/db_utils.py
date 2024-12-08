@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
-from app.config.settings import get_settings
+from config.settings import get_settings
 
 def ensure_database_exists():
     """Crea la base de datos si no existe."""
