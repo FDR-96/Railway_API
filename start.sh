@@ -1,4 +1,4 @@
-#!/bin/sh
+
 set -e
 
 sleep 3 # Sleep 3 seconds for railway private URL to initialize
@@ -18,6 +18,8 @@ fi
 # Aplicar las migraciones a la base de datos
 echo "Aplicando migraciones a la base de datos..."
 alembic upgrade head
+export PYTHONPATH=$(pwd)
+python -m app.main
 
 # Iniciar el servidor
 echo "Iniciando servidor..."
