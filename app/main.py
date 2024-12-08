@@ -12,8 +12,9 @@ from app.auth.endpoints import router as auth_router
 
 from app.common.dependencies import get_db
 from app.example_module.apis import router as example_router
-
-
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # Lifespan (startup, shutdown)
 @asynccontextmanager
 async def lifespan(_: FastAPI):
