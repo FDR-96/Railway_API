@@ -66,9 +66,9 @@ services:
       volumes:
         - ./www:/usr/share/nginx/html:ro
       environment:
-        - VIRTUAL_HOST=localhost,localhost
-        - LETSENCRYPT_HOST=localhost,localhost
-        - LETSENCRYPT_EMAIL=pablo@pablokbs.com
+      - VIRTUAL_HOST=app.centinela.freesite.online
+      - LETSENCRYPT_HOST=app.centinela.freesite.online,www.app.centinela.freesite.online
+      - LETSENCRYPT_EMAIL=roldanfede96@gmail.com
       depends_on:
         - nginx-proxy
         - letsencrypt
